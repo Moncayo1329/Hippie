@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Run & Give </title>
+  <meta name="description" content="CorAyuda: tienda de zapatillas y ropa deportiva donde cada compra apoya donaciones." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ff4d4f' d='M32 58s24-13.5 24-32A16 16 0 0 0 32 14 16 16 0 0 0 8 26c0 18.5 24 32 24 32z'/%3E%3C/svg%3E">
+  <style>
+    :root{
+      --bg:#0f1115;
+      --card:#151925;
+      --muted:#99a1b3;
+      --text:#e7eaf3;
+      --brand:#68d391; /* verde solidario */
+      --accent:#7aa2ff;
+      --danger:#ff6b6b;
+      --ring:0 0 0 3px rgba(122,162,255,.35);
+      --radius:16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:linear-gradient(180deg,#0e1014,#0c0e12);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    button{cursor:pointer}
+
+    /* Layout */
+    .container{width:min(1120px,92vw);margin-inline:auto}
+    header{position:sticky;top:0;z-index:50;background:rgba(12,14,18,.75);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0}
+    .brand{display:flex;gap:.6rem;align-items:center;font-weight:800;letter-spacing:.3px}
+    .brand .logo{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 30% 30%, var(--brand), #2dd4bf 60%, #0ea5e9);box-shadow:0 6px 18px rgba(104,211,145,.35)}
+    .brand span{font-size:1.05rem}
+    .nav-actions{display:flex;gap:.5rem;align-items:center}
+    .btn{padding:.65rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:#171a22;transition:transform .1s ease, box-shadow .2s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:linear-gradient(90deg,var(--brand),#34d399);color:#0a0c10;border:none;box-shadow:0 10px 20px rgba(104,211,145,.35)}
+    .icon{width:22px;height:22px;display:inline-block}
+    .cart-indicator{position:relative}
+    .badge{position:absolute;top:-8px;right:-8px;background:var(--accent);color:#0a0c10;border-radius:999px;padding:.15rem .45rem;font-size:.7rem;font-weight:700}
+
+    /* Hero */
+    .hero{padding:48px 0 28px;display:grid;gap:22px}
+    .hero-card{background:linear-gradient(180deg,#121622,#0f1320);border:1px solid rgba(255,255,255,.06);border-radius:calc(var(--radius) + 6px);padding:24px;box-shadow:var(--shadow);display:grid;gap:16px;align-items:center}
+    .hero h1{font-size:clamp(1.6rem,3.5vw,2.6rem);line-height:1.15;margin:0}
+    .hero p{margin:0;color:var(--muted)}
+    .hero-cta{display:flex;gap:.6rem;flex-wrap:wrap}
+    .hero img{border-radius:var(--radius)}
+    .grid{display:grid;gap:16px}
+    @media (min-width:900px){
+      .hero{grid-template-columns:1.1fr .9fr}
+    }
+
+    /* Donation bar */
+    .donation{background:linear-gradient(180deg,#101521,#0d111a);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:16px;display:grid;gap:8px}
+    .progress{height:12px;background:#0b0e14;border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+    .progress > span{display:block;height:100%;width:36%;background:linear-gradient(90deg,var(--accent),#8b5cf6);box-shadow:inset 0 0 12px rgba(255,255,255,.2)}
+    .donation small{color:var(--muted)}
+    .donation strong{color:#fff}
+
+    /* Search + categories */
+    .toolbar{display:flex;gap:.6rem;flex-wrap:wrap;margin:8px 0 2px}
+    .input{flex:1;min-width:200px;background:#131722;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:.7rem 1rem;color:var(--text);outline:none}
+    .input:focus{box-shadow:var(--ring);border-color:transparent}
+    .chip{padding:.45rem .8rem;border-radius:999px;background:#141824;border:1px solid rgba(255,255,255,.08);font-size:.9rem}
+    .chip[data-active="true"]{background:linear-gradient(90deg,#22283a,#1a2033);border-color:#2a3352}
+
+    /* Product grid */
+    .section{margin:28px 0}
+    .section h2{margin:0 0 12px;font-size:1.2rem}
+    .products{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media (min-width:640px){ .products{grid-template-columns:repeat(3,1fr)} }
+    @media (min-width:980px){ .products{grid-template-columns:repeat(4,1fr)} }
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+    .card picture{aspect-ratio:1/1;background:#0e121b}
+    .card .body{padding:12px;display:grid;gap:6px}
+    .title{font-weight:700}
+    .price{display:flex;gap:.5rem;align-items:center}
+    .price s{color:var(--muted);font-size:.9rem}
+    .price b{color:#fff}
+    .actions{margin-top:auto;display:flex;gap:.5rem}
+    .qty{display:flex;align-items:center;gap:.3rem;background:#111523;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:.35rem .5rem}
+    .qty button{background:transparent;border:none;color:#fff;font-size:1rem;width:26px;height:26px;line-height:26px}
+    .add{flex:1}
+
+    /* Highlights & newsletter */
+    .highlights{display:grid;gap:12px}
+    @media (min-width:900px){ .highlights{grid-template-columns:1fr 1fr} }
+    .tile{background:linear-gradient(180deg,#121622,#0f1320);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:18px;display:grid;gap:8px}
+    .newsletter form{display:flex;gap:.5rem;flex-wrap:wrap}
+    .newsletter input[type="email"]{flex:1;min-width:220px}
+
+    /* Footer */
+    footer{margin-top:32px;border-top:1px solid rgba(255,255,255,.06);padding:24px 0;color:var(--muted)}
+    .foot{display:grid;gap:8px}
+    @media (min-width:760px){ .foot{grid-template-columns:1fr auto} }
+
+    /* Motion prefs */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header role="banner">
+    <div class="container nav" aria-label="Barra de navegación">
+      <a class="brand" href="#" aria-label="Ir al inicio">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Run & Give</span>
+      </a>
+      <nav class="nav-actions" aria-label="Acciones">
+        <a class="btn" href="#productos">Productos</a>
+        <a class="btn" href="#donaciones">Donaciones</a>
+        <button class="btn btn-primary cart-indicator" id="openCart" aria-label="Abrir carrito">
+          🛒 <span class="badge" id="cartCount" aria-live="polite">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="contenido" class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-card">
+        <h1 id="hero-title">Ropa y zapatillas deportivas que <span style="background:linear-gradient(90deg,var(--brand),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent">impulsan donaciones</span>.</h1>
+        <p>Cada compra en <strong>CorAyuda</strong> financia proyectos sociales. Es simple: te vistes mejor, y alguien vive mejor.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#productos">Ver productos</a>
+          <a class="btn" href="#como-funciona">Cómo funciona</a>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1280&auto=format&fit=crop" alt="Zapatillas deportivas en un fondo oscuro" loading="lazy">
+    </section>
+
+    <!-- DONATION BAR -->
+    <section id="donaciones" class="section donation" aria-labelledby="don-title">
+      <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap">
+        <h2 id="don-title" style="margin:0;font-size:1.05rem">Meta de donaciones — Agosto</h2>
+        <strong id="donRaised">$3,600</strong> / <small>meta $10,000</small>
+      </div>
+      <div class="progress" aria-label="Progreso de donaciones" aria-valuemin="0" aria-valuemax="100" aria-valuenow="36" role="progressbar">
+        <span id="donBar"></span>
+      </div>
+      <small>Transparencia total: publicamos recibos y proyectos apoyados.</small>
+    </section>
+
+    <!-- TOOLBAR -->
+    <section class="toolbar" aria-label="Búsqueda y categorías">
+      <input id="searchInput" class="input" type="search" placeholder="Buscar: 'zapatillas', 'running', 'hoodie'…" aria-label="Buscar productos">
+      <button class="chip" data-filter="all" data-active="true">Todo</button>
+      <button class="chip" data-filter="zapatillas">Zapatillas</button>
+      <button class="chip" data-filter="ropa">Ropa</button>
+      <button class="chip" data-filter="accesorios">Accesorios</button>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="productos" class="section" aria-labelledby="prod-title">
+      <h2 id="prod-title">Novedades</h2>
+      <div class="products" id="productGrid" role="list"></div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section class="section highlights" id="como-funciona" aria-label="Información destacada">
+      <article class="tile">
+        <h3 style="margin:0">¿Cómo convertimos compras en impacto?</h3>
+        <p>Destinamos un porcentaje fijo por venta a donaciones verificadas. Publicamos reportes mensuales con montos, causas y resultados.</p>
+        <ul>
+          <li>Donación fija por cada par de zapatillas vendido.</li>
+          <li>Reportes públicos y auditables.</li>
+          <li>Alianzas con ONGs locales.</li>
+        </ul>
+      </article>
+      <article class="tile newsletter">
+        <h3 style="margin:0">Súmate al boletín</h3>
+        <p>Descuentos, lanzamientos y actualizaciones de impacto.</p>
+        <form id="newsletterForm" novalidate>
+          <input class="input" type="email" id="email" name="email" placeholder="tu@email..."
+                 aria-label="Correo electrónico" required>
+          <button class="btn btn-primary" type="submit">Quiero recibir noticias</button>
+          <p id="newsletterMsg" role="status" aria-live="polite" style="margin:.3rem 0 0;color:var(--muted)"></p>
+        </form>
+      </article>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo">
+    <div class="container foot">
+      <p>© <span id="year"></span> Run & Give — Hecho con propósito.</p>
+      <nav aria-label="Enlaces de pie de página" style="display:flex;gap:1rem;flex-wrap:wrap">
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Transparencia</a>
+        <a href="#donaciones">Donaciones</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- SIMPLE CART DRAWER -->
+  <div id="drawer" aria-hidden="true" style="position:fixed;inset:0 0 0 auto;width:min(420px,92vw);background:#0f1420;border-left:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow);transform:translateX(110%);transition:transform .25s ease;display:grid;grid-template-rows:auto 1fr auto;z-index:60">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid rgba(255,255,255,.08)">
+      <strong>Tu carrito</strong>
+      <button class="btn" id="closeCart" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div id="cartItems" style="padding:16px;display:grid;gap:10px;overflow:auto"></div>
+    <div style="padding:16px;border-top:1px solid rgba(255,255,255,.08)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <span>Total</span><strong id="cartTotal">$0</strong>
+      </div>
+      <button class="btn btn-primary" style="width:100%">Pagar</button>
+    </div>
+  </div>
+
+  <script>
+    // --- DATA MOCK ---
+    const PRODUCTS = [
+      {id:1, name:"Zapatillas Runner Pro", price:89, old:119, tag:"zapatillas", img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop"},
+      {id:2, name:"Hoodie Training Essential", price:49, old:69, tag:"ropa", img:"https://images.unsplash.com/photo-1549057446-9f5c6ac91a04?q=80&w=900&auto=format&fit=crop"},
+      {id:3, name:"Short DryFit", price:29, old:null, tag:"ropa", img:"https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=900&auto=format&fit=crop"},
+      {id:4, name:"Gorra AirFlow", price:19, old:25, tag:"accesorios", img:"https://images.unsplash.com/photo-1534215754734-18e55d13e346?q=80&w=900&auto=format&fit=crop"},
+      {id:5, name:"Zapatillas StreetFlex", price:79, old:99, tag:"zapatillas", img:"https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=900&auto=format&fit=crop"},
+      {id:6, name:"Camiseta Performance", price:27, old:35, tag:"ropa", img:"https://images.unsplash.com/photo-1520975867597-0a3b62f5aa47?q=80&w=900&auto=format&fit=crop"},
+      {id:7, name:"Calcetas Antideslizantes", price:12, old:null, tag:"accesorios", img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=900&auto=format&fit=crop"},
+      {id:8, name:"Leggings PowerMove", price:59, old:79, tag:"ropa", img:"https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=900&auto=format&fit=crop"}
+    ];
+
+    // --- UTIL ---
+    const fmt = n => `$${n.toFixed(0)}`;
+
+    // --- RENDER PRODUCTS ---
+    const grid = document.getElementById('productGrid');
+    function renderProducts(list){
+      grid.innerHTML = '';
+      list.forEach(p=>{
+        const li = document.createElement('article');
+        li.className = 'card';
+        li.setAttribute('role','listitem');
+        li.innerHTML = `
+          <picture><img src="${p.img}" alt="${p.name}" loading="lazy"></picture>
+          <div class="body">
+            <div class="title">${p.name}</div>
+            <div class="price">${p.old ? `<s>${fmt(p.old)}</s>`:''}<b>${fmt(p.price)}</b></div>
+            <div class="actions">
+              <div class="qty" aria-label="Cantidad">
+                <button aria-label="Disminuir" data-op="dec">−</button>
+                <span data-qty>1</span>
+                <button aria-label="Aumentar" data-op="inc">+</button>
+              </div>
+              <button class="btn btn-primary add" data-id="${p.id}">Añadir</button>
+            </div>
+          </div>
+        `;
+        // qty logic
+        const qtyBox = li.querySelector('.qty');
+        let qty = 1;
+        qtyBox.addEventListener('click', (e)=>{
+          if(e.target.dataset.op==='inc'){ qty++; }
+          if(e.target.dataset.op==='dec'){ qty = Math.max(1, qty-1); }
+          qtyBox.querySelector('[data-qty]').textContent = qty;
+        });
+        // add to cart
+        li.querySelector('.add').addEventListener('click',()=>{
+          addToCart(p, qty);
+        });
+        grid.appendChild(li);
+      });
+    }
+
+    // --- FILTER & SEARCH ---
+    const chips = [...document.querySelectorAll('.chip')];
+    const searchInput = document.getElementById('searchInput');
+    let currentFilter = 'all';
+    function applyFilters(){
+      const q = searchInput.value.trim().toLowerCase();
+      const out = PRODUCTS.filter(p=>{
+        const okCat = currentFilter==='all' ? true : p.tag===currentFilter;
+        const okText = !q || p.name.toLowerCase().includes(q);
+        return okCat && okText;
+      });
+      renderProducts(out);
+    }
+    chips.forEach(ch=>{
+      ch.addEventListener('click', ()=>{
+        chips.forEach(c=>c.dataset.active='false');
+        ch.dataset.active='true';
+        currentFilter = ch.dataset.filter;
+        applyFilters();
+      });
+    });
+    searchInput.addEventListener('input', applyFilters);
+
+    // --- CART ---
+    const CART_KEY = 'corayuda_cart_v1';
+    const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    const cartCount = document.getElementById('cartCount');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+    function updateCartUI(){
+      cartCount.textContent = cart.reduce((a,i)=>a+i.qty,0);
+      cartItems.innerHTML = cart.length ? '' : '<p style="color:var(--muted)">Tu carrito está vacío.</p>';
+      let total = 0;
+      cart.forEach(item=>{
+        total += item.price * item.qty;
+        const row = document.createElement('div');
+        row.style.display='grid';
+        row.style.gridTemplateColumns='auto 1fr auto auto';
+        row.style.gap='10px';
+        row.style.alignItems='center';
+        row.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" width="56" height="56" style="border-radius:10px;object-fit:cover">
+          <div>
+            <div style="font-weight:700">${item.name}</div>
+            <small class="muted">${fmt(item.price)}</small>
+          </div>
+          <div class="qty" aria-label="Cantidad">
+            <button aria-label="Disminuir">−</button>
+            <span>${item.qty}</span>
+            <button aria-label="Aumentar">+</button>
+          </div>
+          <button class="btn" aria-label="Eliminar">🗑️</button>
+        `;
+        const [dec, , inc] = row.querySelectorAll('.qty button, .qty span');
+        dec.addEventListener('click',()=>{ item.qty=Math.max(1,item.qty-1); saveCart(); updateCartUI(); });
+        inc.addEventListener('click',()=>{ item.qty=item.qty+1; saveCart(); updateCartUI(); });
+        row.querySelector('button[aria-label="Eliminar"]').addEventListener('click',()=>{
+          const idx = cart.findIndex(c=>c.id===item.id);
+          cart.splice(idx,1); saveCart(); updateCartUI();
+        });
+        cartItems.appendChild(row);
+      });
+      cartTotal.textContent = fmt(total);
+    }
+    function addToCart(p, qty){
+      const found = cart.find(i=>i.id===p.id);
+      if(found) found.qty += qty;
+      else cart.push({id:p.id, name:p.name, price:p.price, img:p.img, qty});
+      saveCart(); updateCartUI(); openDrawer(true);
+    }
+
+    // Drawer open/close
+    const drawer = document.getElementById('drawer');
+    const openBtn = document.getElementById('openCart');
+    const closeBtn = document.getElementById('closeCart');
+    function openDrawer(v){ drawer.style.transform = v ? 'translateX(0)' : 'translateX(110%)'; drawer.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+    openBtn.addEventListener('click', ()=>openDrawer(true));
+    closeBtn.addEventListener('click', ()=>openDrawer(false));
+    drawer.addEventListener('keydown', (e)=>{ if(e.key==='Escape') openDrawer(false); });
+
+    // Newsletter
+    const form = document.getElementById('newsletterForm');
+    const email = document.getElementById('email');
+    const msg = document.getElementById('newsletterMsg');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if(!email.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)){
+        msg.textContent = 'Por favor, escribe un correo válido.'; msg.style.color='var(--danger)'; email.focus(); return;
+      }
+      msg.textContent = '¡Listo! Te agregamos al boletín.'; msg.style.color='var(--brand)'; email.value='';
+    });
+
+    // Donation UI init
+    const raised = 3600, goal = 10000;
+    const pct = Math.round((raised/goal)*100);
+    document.getElementById('donRaised').textContent = fmt(raised);
+    document.querySelector('.progress').setAttribute('aria-valuenow', String(pct));
+    const bar = document.getElementById('donBar'); bar.style.width = pct + '%';
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Init
+    renderProducts(PRODUCTS);
+    updateCartUI();
+    applyFilters();
+
+    // Accessibility: trap focus inside drawer when open (basic)
+    document.getElementById('openCart').addEventListener('click', ()=>{
+      setTimeout(()=>{
+        const focusables = drawer.querySelectorAll('button,a,input');
+        focusables[0]?.focus();
+        drawer.addEventListener('keydown', (e)=>{
+          if(e.key!=='Tab') return;
+          const f = Array.from(focusables);
+          const i = f.indexOf(document.activeElement);
+          if(e.shiftKey && (i===0)){ e.preventDefault(); f[f.length-1].focus(); }
+          else if(!e.shiftKey && (i===f.length-1)){ e.preventDefault(); f[0].focus(); }
+        }, {once:true});
+      }, 50);
+    });
+  </script>
+</body>
+</html>
