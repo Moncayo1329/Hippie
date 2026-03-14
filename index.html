@@ -132,11 +132,11 @@
 
     <!-- TOOLBAR -->
     <section class="toolbar" aria-label="Búsqueda y categorías">
-      <input id="searchInput" class="input" type="search" placeholder="Buscar: 'zapatillas', 'running', 'hoodie'…" aria-label="Buscar productos">
-      <button class="chip" data-filter="all" data-active="true">Todo</button>
-      <button class="chip" data-filter="zapatillas">Zapatillas</button>
-      <button class="chip" data-filter="ropa">Ropa</button>
-      <button class="chip" data-filter="accesorios">Accesorios</button>
+      <input id="searchInput" class="input" type="search" placeholder="Buscar: 'zapatillas', 'running', 'hoodie'…" aria-label="Search products">
+      <button class="chip" data-filter="all" data-active="true">All</button>
+      <button class="chip" data-filter="zapatillas">Shoes</button>
+      <button class="chip" data-filter="ropa">Clothes</button>
+      <button class="chip" data-filter="accesorios">Accessories</button>
     </section>
 
     <!-- PRODUCTS -->
@@ -147,7 +147,6 @@
 
     <!-- HIGHLIGHTS -->
      <section class="section highlights" id="como-funciona" aria-label="Información destacada">
-      <h1>Pictures</h1>
     </section>
   </main>
 
@@ -178,14 +177,14 @@
   <script>
     // --- DATA MOCK ---
     const PRODUCTS = [
-      {id:1, name:"Zapatillas Runner Pro", price:89, old:119, tag:"zapatillas", img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop"},
-      {id:2, name:"Hoodie Training Essential", price:49, old:69, tag:"ropa", img:"https://images.unsplash.com/photo-1549057446-9f5c6ac91a04?q=80&w=900&auto=format&fit=crop"},
+      {id:1, name:"Zapatillas Runner Pro", price:89, tag:"zapatillas", img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=900&auto=format&fit=crop"},
+      {id:2, name:"Hoodie Training Essential", price:49, tag:"ropa", img:"https://images.unsplash.com/photo-1549057446-9f5c6ac91a04?q=80&w=900&auto=format&fit=crop"},
       {id:3, name:"Short DryFit", price:29, old:null, tag:"ropa", img:"https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=900&auto=format&fit=crop"},
-      {id:4, name:"Gorra AirFlow", price:19, old:25, tag:"accesorios", img:"https://images.unsplash.com/photo-1534215754734-18e55d13e346?q=80&w=900&auto=format&fit=crop"},
-      {id:5, name:"Zapatillas StreetFlex", price:79, old:99, tag:"zapatillas", img:"https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=900&auto=format&fit=crop"},
-      {id:6, name:"Camiseta Performance", price:27, old:35, tag:"ropa", img:"https://images.unsplash.com/photo-1520975867597-0a3b62f5aa47?q=80&w=900&auto=format&fit=crop"},
+      {id:4, name:"Gorra AirFlow", price:19, tag:"accesorios", img:"https://images.unsplash.com/photo-1534215754734-18e55d13e346?q=80&w=900&auto=format&fit=crop"},
+      {id:5, name:"Zapatillas StreetFlex", price:79, tag:"zapatillas", img:"https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=900&auto=format&fit=crop"},
+      {id:6, name:"Camiseta Performance", price:27, tag:"ropa", img:"https://images.unsplash.com/photo-1520975867597-0a3b62f5aa47?q=80&w=900&auto=format&fit=crop"},
       {id:7, name:"Calcetas Antideslizantes", price:12, old:null, tag:"accesorios", img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=900&auto=format&fit=crop"},
-      {id:8, name:"Leggings PowerMove", price:59, old:79, tag:"ropa", img:"https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=900&auto=format&fit=crop"}
+      {id:8, name:"Leggings PowerMove", price:59, tag:"ropa", img:"https://images.unsplash.com/photo-1545389336-cf090694435e?q=80&w=900&auto=format&fit=crop"}
     ];
 
     // --- UTIL ---
@@ -206,11 +205,10 @@
             <div class="price">${p.old ? `<s>${fmt(p.old)}</s>`:''}<b>${fmt(p.price)}</b></div>
             <div class="actions">
               <div class="qty" aria-label="Cantidad">
-                <button aria-label="Disminuir" data-op="dec">−</button>
+                <button class="btn btn-primary add" data-id="${p.id}"></button>
                 <span data-qty>1</span>
-                <button aria-label="Aumentar" data-op="inc">+</button>
               </div>
-              <button class="btn btn-primary add" data-id="${p.id}">Añadir</button>
+              
             </div>
           </div>
         `;
