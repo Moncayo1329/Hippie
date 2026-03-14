@@ -111,11 +111,7 @@
         <span>Hippie</span>
       </a>
       <nav class="nav-actions" aria-label="Acciones">
-        <a class="btn" href="#productos">Productos</a>
-        <a class="btn" href="#donaciones">Donaciones</a>
-        <button class="btn btn-primary cart-indicator" id="openCart" aria-label="Abrir carrito">
-          🛒 <span class="badge" id="cartCount" aria-live="polite">0</span>
-        </button>
+        <a class="btn" href="#productos">Products</a>
       </nav>
     </div>
   </header>
@@ -124,27 +120,15 @@
   <main id="contenido" class="container">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-card">
-        <h1 id="hero-title">Ropa y zapatillas deportivas que <span style="background:linear-gradient(90deg,var(--brand),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent">impulsan donaciones</span>.</h1>
-        <p>Cada compra en <strong>CorAyuda</strong> financia proyectos sociales. Es simple: te vistes mejor, y alguien vive mejor.</p>
+        <h1 id="hero-title">Selling second-hand <span style="background:linear-gradient(90deg,var(--brand),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent">shoes and clothing</span>.</h1>
+        <p>Give your<strong> clothes a second life</strong> don't throw them away</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#productos">Ver productos</a>
-          <a class="btn" href="#como-funciona">Cómo funciona</a>
+          <a class="btn btn-primary" href="#productos">See products</a>
         </div>
       </div>
-      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1280&auto=format&fit=crop" alt="Zapatillas deportivas en un fondo oscuro" loading="lazy">
     </section>
 
     <!-- DONATION BAR -->
-    <section id="donaciones" class="section donation" aria-labelledby="don-title">
-      <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap">
-        <h2 id="don-title" style="margin:0;font-size:1.05rem">Meta de donaciones — Agosto</h2>
-        <strong id="donRaised">$3,600</strong> / <small>meta $10,000</small>
-      </div>
-      <div class="progress" aria-label="Progreso de donaciones" aria-valuemin="0" aria-valuemax="100" aria-valuenow="36" role="progressbar">
-        <span id="donBar"></span>
-      </div>
-      <small>Transparencia total: publicamos recibos y proyectos apoyados.</small>
-    </section>
 
     <!-- TOOLBAR -->
     <section class="toolbar" aria-label="Búsqueda y categorías">
@@ -157,43 +141,21 @@
 
     <!-- PRODUCTS -->
     <section id="productos" class="section" aria-labelledby="prod-title">
-      <h2 id="prod-title">Novedades</h2>
+      <h2 id="prod-title">Products</h2>
       <div class="products" id="productGrid" role="list"></div>
     </section>
 
     <!-- HIGHLIGHTS -->
-    <section class="section highlights" id="como-funciona" aria-label="Información destacada">
-      <article class="tile">
-        <h3 style="margin:0">¿Cómo convertimos compras en impacto?</h3>
-        <p>Destinamos un porcentaje fijo por venta a donaciones verificadas. Publicamos reportes mensuales con montos, causas y resultados.</p>
-        <ul>
-          <li>Donación fija por cada par de zapatillas vendido.</li>
-          <li>Reportes públicos y auditables.</li>
-          <li>Alianzas con ONGs locales.</li>
-        </ul>
-      </article>
-      <article class="tile newsletter">
-        <h3 style="margin:0">Súmate al boletín</h3>
-        <p>Descuentos, lanzamientos y actualizaciones de impacto.</p>
-        <form id="newsletterForm" novalidate>
-          <input class="input" type="email" id="email" name="email" placeholder="tu@email..."
-                 aria-label="Correo electrónico" required>
-          <button class="btn btn-primary" type="submit">Quiero recibir noticias</button>
-          <p id="newsletterMsg" role="status" aria-live="polite" style="margin:.3rem 0 0;color:var(--muted)"></p>
-        </form>
-      </article>
+     <section class="section highlights" id="como-funciona" aria-label="Información destacada">
+      <h1>Pictures</h1>
     </section>
   </main>
 
   <!-- FOOTER -->
   <footer role="contentinfo">
     <div class="container foot">
-      <p>© <span id="year"></span> Run & Give — Hecho con propósito.</p>
+      <p>© <span id="year"></span> Hippie — second-hand.</p>
       <nav aria-label="Enlaces de pie de página" style="display:flex;gap:1rem;flex-wrap:wrap">
-        <a href="#">Términos</a>
-        <a href="#">Privacidad</a>
-        <a href="#">Transparencia</a>
-        <a href="#donaciones">Donaciones</a>
       </nav>
     </div>
   </footer>
